@@ -134,7 +134,10 @@ Route::get('auth', function (Request $request) {
 });
 
 Route::get('user', function (Request $request) {
-    return response()->json(\App\Clients\Auth\MontaAuth::getUser(MontaClient::cookies($request->id)));
+    $request->validate([
+        'id' => 'required',
+    ]);
+    return response()->json();
 });
 
 Route::post('ocpp/{serialNumber}', function (string $serialNumber, Request $request) {

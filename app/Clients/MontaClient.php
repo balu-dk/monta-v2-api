@@ -408,4 +408,19 @@ class MontaClient
 
         return $response;
     }
+
+    public static function getCurrentUser($id, $cookies): array {
+        if (!$id || !Operator::where('operator_id', $id)->exists()) {
+            return [];
+        }
+
+        if(!self::authenticate($id)) {
+            return [
+                'status' => 401,
+                'message' => 'Unauthorized',
+            ];
+        }
+
+        MontaAuth::getUser(MontaClient::cookies($id));
+    }
 }
