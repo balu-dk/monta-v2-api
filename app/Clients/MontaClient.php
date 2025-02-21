@@ -424,8 +424,9 @@ class MontaClient
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
             return [];
         }
-
-        if(!self::authenticate($id)) {
+        $authenticated = self::authenticate($id);
+        Log::debug('Authenticated: ' . $authenticated);
+        if(!$authenticated) {
             return [
                 'status' => 401,
                 'message' => 'Unauthorized',
