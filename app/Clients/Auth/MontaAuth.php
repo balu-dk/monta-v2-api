@@ -105,31 +105,19 @@ class MontaAuth
         }
     }
 
-    public static function getUser(string $csrf_token_key, string $csrf_token_value, string $oxy_kratos_session, string $xsrf_token, string $monta_session) {
+    public static function getUser($cookies) {
         try {
             $cookieJar = new CookieJar();
             // Add cookies for monta.app
             $cookieJar->setCookie(new SetCookie([
-                'Name' => $csrf_token_key,
-                'Value' => $csrf_token_value,
+                'Name' => $cookies['csrfTokenKey'],
+                'Value' => $cookies['csrfTokenValue'],
                 'Domain' => 'monta.app'
             ]));
             $cookieJar->setCookie(new SetCookie([
                 'Name' => 'ory_kratos_session',
-                'Value' => $oxy_kratos_session,
+                'Value' => $cookies['oxyKratosSession'],
                 'Domain' => 'monta.app'
-            ]));
-
-            // Add cookies for app.monta.app
-            $cookieJar->setCookie(new SetCookie([
-                'Name' => 'XSRF-TOKEN',
-                'Value' => $xsrf_token,
-                'Domain' => 'app.monta.app'
-            ]));
-            $cookieJar->setCookie(new SetCookie([
-                'Name' => 'monta_session',
-                'Value' => $monta_session,
-                'Domain' => 'app.monta.app'
             ]));
 
             $response = Http::withHeaders([
