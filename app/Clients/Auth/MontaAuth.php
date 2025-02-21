@@ -261,10 +261,11 @@ class MontaAuth
                 Log::debug(implode($identity));
 
                 $response = self::getAuthenticationCookies($id, $csrf_token, $email, $password, [$cookieKey => $cookieValue]);
-                Log::debug(implode($response));
+                Log::debug(implode(';', $response));
                 if ($response['status'] == 200) {
+                    Log::debug('Cookies are retrieved');
                     $oxy_kratos_session = reset($response['cookie']);
-
+                    Log::debug('Oxy kratos session: ' . reset($response['cookie']));
                     $session = self::getSession($cookieKey, $cookieValue, $oxy_kratos_session);
                     if ($session['status'] == 200) {
                         $xsrf_token = $session['XSRF-Token'];
