@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class MontaAuth
 {
-    public static function getIdentity() {
+    public static function getIdentity(): array {
         try {
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
@@ -30,6 +30,7 @@ class MontaAuth
                 }
             }
             $cookies = self::parseCookies($response->headers()['set-cookie'][0]);
+            Log::debug(implode($cookies));
             return [
                 'id' => $id,
                 'csrf_token' => $csrf_token,
@@ -39,10 +40,16 @@ class MontaAuth
             ];
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
             Log::error($e->getMessage());
-            return $e->getMessage();
+            return [
+                "status" => 500,
+                "body" => $e->getMessage()
+            ];
         } catch (ConnectionException $e) {
             Log::error($e->getMessage());
-            return $e->getMessage();
+            return [
+                "status" => 500,
+                "body" => $e->getMessage()
+            ];
         }
     }
 
