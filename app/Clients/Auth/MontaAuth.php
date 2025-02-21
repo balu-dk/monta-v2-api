@@ -262,13 +262,13 @@ class MontaAuth
                 $password = self::getDatabaseLogin($operator)['password'];
 
                 $response = self::getAuthenticationCookies($id, $csrf_token, $email, $password, [$cookieKey => $cookieValue]);
-                Log::debug('Authentication cookies: ' . reset($response['cookie']));
                 if ($response['status'] == 200) {
                     Log::debug('Authentication cookies was successfully retrieved');
                     $oxy_kratos_session = reset($response['cookie']);
-                    Log::debug('Oxy kratos session: ' . reset($response['cookie']));
                     $session = self::getSession($cookieKey, $cookieValue, $oxy_kratos_session);
+                    Log::debug('Monta Session cookie: ' . $session['monta_session']);
                     if ($session['status'] == 200) {
+                        Log::debug('Session cookies was successfully retrieved');
                         $xsrf_token = $session['XSRF-Token'];
                         $monta_session = $session['monta_session'];
 
