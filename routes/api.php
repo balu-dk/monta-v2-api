@@ -105,8 +105,6 @@ Route::get('chargepoints/{chargepoint}', function (string $chargepoint, Request 
         'id' => 'required',
     ]);
 
-    \Illuminate\Support\Facades\Log::debug(env('API_KEY'));
-
     $cookies = MontaClient::cookies($request->id);
     return response()->json(MontaClient::getChargepointBySerialNumber($request->id, $chargepoint, $cookies));
 });
