@@ -207,14 +207,15 @@ class MontaAuth
         $csrfTokenKey = $operator->csrf_token_key ? Crypt::decrypt($operator->csrf_token_key) : '';
         $csrfTokenValue = $operator->csrf_token_value ? Crypt::decrypt($operator->csrf_token_value) : '';
         $oxyKratosSession = $operator->oxy_kratos_session ? Crypt::decrypt($operator->oxy_kratos_session) : '';
-        $xsrfToken = $operator->xsrf_token ? Crypt::decrypt($operator->xsrf_token) : '';
-        $montaSession = $operator->monta_session ? Crypt::decrypt($operator->monta_session) : '';
+
+        Log::debug('CSRF Token Key: ' . $csrfTokenKey);
+        Log::debug('CSRF Token Value: ' . $csrfTokenValue);
+        Log::debug('Oxy kratos session: ' . $oxyKratosSession);
+
         return [
             'csrfTokenKey' => $csrfTokenKey,
             'csrfTokenValue' => $csrfTokenValue,
             'oxyKratosSession' => $oxyKratosSession,
-            'xsrfToken' => $xsrfToken,
-            'montaSession' => $montaSession,
         ];
     }
 
