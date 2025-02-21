@@ -208,10 +208,6 @@ class MontaAuth
         $csrfTokenValue = $operator->csrf_token_value ? Crypt::decrypt($operator->csrf_token_value) : '';
         $oxyKratosSession = $operator->oxy_kratos_session ? Crypt::decrypt($operator->oxy_kratos_session) : '';
 
-        Log::debug('CSRF Token Key: ' . $csrfTokenKey);
-        Log::debug('CSRF Token Value: ' . $csrfTokenValue);
-        Log::debug('Oxy kratos session: ' . $oxyKratosSession);
-
         return [
             'csrfTokenKey' => $csrfTokenKey,
             'csrfTokenValue' => $csrfTokenValue,

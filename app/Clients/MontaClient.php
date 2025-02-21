@@ -438,6 +438,6 @@ class MontaClient
 
         $cookies = self::cookies($id);
 
-        MontaAuth::getUser($cookies);
+        return MontaAuth::getUser($cookies);
     }
 }
