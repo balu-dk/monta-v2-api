@@ -254,6 +254,10 @@ class MontaAuth
                 if ($response['status'] == 200) {
                     Log::debug('Authentication cookies was successfully retrieved');
                     $oxy_kratos_session = reset($response['cookie']);
+
+                    Log::debug('Ory kratos session: ' . $oxy_kratos_session);
+                    Log::debug('CSRF Token Key: ' . $cookieKey);
+                    Log::debug('CSRF token value: ' . $cookieValue);
                     $operator->csrf_token_key = Crypt::encrypt($cookieKey);
                     $operator->csrf_token_value = Crypt::encrypt($cookieValue);
                     $operator->oxy_kratos_session = Crypt::encrypt($oxy_kratos_session);
