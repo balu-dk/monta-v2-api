@@ -32,6 +32,7 @@ class MontaAuth
             $cookies = self::parseCookies($response->headers()['set-cookie'][0]);
             Log::debug(implode($cookies));
             return [
+                'status' => '200',
                 'id' => $id,
                 'csrf_token' => $csrf_token,
                 'cookie' => [
@@ -241,6 +242,9 @@ class MontaAuth
             if (!self::isLoggedIn($cookies)) {
                 Log::debug('Operator is not logged in');
                 $identity = self::getIdentity();
+                if ($identity['status'] != 200) {
+                    return [$identity['status'], false];
+                }
                 $id = $identity['id'];
                 $csrf_token = $identity['csrf_token'];
                 $cookieKey = key($identity['cookie']);
