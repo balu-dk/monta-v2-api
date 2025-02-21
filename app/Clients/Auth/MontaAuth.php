@@ -9,6 +9,7 @@ use GuzzleHttp\Cookie\SetCookie;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class MontaAuth
 {
@@ -229,6 +230,7 @@ class MontaAuth
 
         try {
             if (!self::isLoggedIn($cookies)) {
+                Log::debug('Operator is not logged in');
                 $identity = self::getIdentity();
                 $id = $identity['id'];
                 $csrf_token = $identity['csrf_token'];
@@ -262,6 +264,8 @@ class MontaAuth
         } catch (\Exception $e) {
             return [500, false];
         }
+
+        Log::debug('Operator is logged in');
 
         return [200, true];
     }
