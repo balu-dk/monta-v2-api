@@ -30,7 +30,7 @@ class MontaAuth
                 }
             }
             $cookies = self::parseCookies($response->headers()['set-cookie'][0]);
-            Log::debug('getIdentity cookies: ' . $cookies);
+            Log::debug('getIdentity cookies: ' . key($cookies) . ' ' . reset($cookies));
             return [
                 'status' => '200',
                 'id' => $id,
@@ -253,6 +253,7 @@ class MontaAuth
                 if ($identity['status'] != 200) {
                     return [$identity['status'], false];
                 }
+                Log::debug('Identity was successfully retrieved');
                 $id = $identity['id'];
                 $csrf_token = $identity['csrf_token'];
                 $cookieKey = key($identity['cookie']);
