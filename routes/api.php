@@ -134,10 +134,6 @@ Route::get('auth', function (Request $request) {
 });
 
 Route::get('user', function (Request $request) {
-    $request->validate([
-        'id' => 'required',
-    ]);
-
     return response()->json(\App\Clients\Auth\MontaAuth::getUser(MontaClient::cookies($request->id)));
 });
 
