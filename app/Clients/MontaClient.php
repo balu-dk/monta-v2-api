@@ -54,7 +54,10 @@ class MontaClient
     public static function cookies($id): array {
         $operator = Operator::where('operator_id', $id)->first();
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
-            return [];
+            return [
+                'status' => 404,
+                'message' => 'Operator not found'
+            ];
         }
 
         return MontaAuth::getDatabaseCookies($operator);
@@ -63,7 +66,10 @@ class MontaClient
     public static function models($id): array {
         $operator = Operator::where('operator_id', $id)->first();
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
-            return [];
+            return [
+                'status' => 404,
+                'message' => 'Operator not found'
+            ];
         }
 
         if(!self::authenticate($id)) {
@@ -78,7 +84,10 @@ class MontaClient
 
     public static function createTeam($id): array {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
-            return [];
+            return [
+                'status' => 404,
+                'message' => 'Operator not found'
+            ];
         }
 
         if(!self::authenticate($id)) {
@@ -109,7 +118,10 @@ class MontaClient
 
     public static function getChargepointBySerialNumber($id, $serialNumber): array {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
-            return [];
+            return [
+                'status' => 404,
+                'message' => 'Operator not found'
+            ];
         }
 
         if(!self::authenticate($id)) {
@@ -344,7 +356,10 @@ class MontaClient
 
     public static function listSubscriptions(string|int $id, bool $chargepointType = false): array {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
-            return [];
+            return [
+                'status' => 404,
+                'message' => 'Operator not found'
+            ];
         }
 
         if(!self::authenticate($id)) {
@@ -370,7 +385,10 @@ class MontaClient
 
     public static function listSubscriptionsByChargepoint(string|int $id, string $chargepointId): array {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
-            return [];
+            return [
+                'status' => 404,
+                'message' => 'Operator not found'
+            ];
         }
 
         if(!self::authenticate($id)) {
@@ -397,7 +415,10 @@ class MontaClient
     public static function addChargepointToSubscription($id, $plan, $chargePointId): array
     {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
-            return [];
+            return [
+                'status' => 404,
+                'message' => 'Operator not found'
+            ];
         }
 
         if(!self::authenticate($id)) {
@@ -424,7 +445,10 @@ class MontaClient
     public static function getCurrentUser($id): array {
         Log::debug('Getting current user with ID ' . $id . '...');
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
-            return [];
+            return [
+                'status' => 404,
+                'message' => 'Operator not found'
+            ];
         }
         Log::debug('Operator exists on ID ' . $id . '!');
         $authenticated = self::authenticate($id);
