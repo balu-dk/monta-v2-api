@@ -30,7 +30,6 @@ class MontaAuth
                 }
             }
             $cookies = self::parseCookies($response->headers()['set-cookie'][0]);
-            Log::debug('getIdentity cookies: ' . key($cookies) . ' ' . reset($cookies));
             return [
                 'status' => '200',
                 'id' => $id,
@@ -254,6 +253,7 @@ class MontaAuth
                     return [$identity['status'], false];
                 }
                 Log::debug('Identity was successfully retrieved');
+
                 $id = $identity['id'];
                 $csrf_token = $identity['csrf_token'];
                 $cookieKey = key($identity['cookie']);
@@ -261,10 +261,8 @@ class MontaAuth
                 $email = self::getDatabaseLogin($operator)['email'];
                 $password = self::getDatabaseLogin($operator)['password'];
 
-                Log::debug('Identity: ' . $identity);
-
                 $response = self::getAuthenticationCookies($id, $csrf_token, $email, $password, [$cookieKey => $cookieValue]);
-                Log::debug('Authentication cookies: ' . $response);
+                Log::debug('Authentication cookies: ' . reset($response['cookie']));
                 if ($response['status'] == 200) {
                     Log::debug('Cookies are retrieved');
                     $oxy_kratos_session = reset($response['cookie']);
