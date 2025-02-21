@@ -260,10 +260,10 @@ class MontaAuth
                 $email = self::getDatabaseLogin($operator)['email'];
                 $password = self::getDatabaseLogin($operator)['password'];
 
-                Log::debug(implode($identity));
+                Log::debug('Identity: ' . $identity);
 
                 $response = self::getAuthenticationCookies($id, $csrf_token, $email, $password, [$cookieKey => $cookieValue]);
-                Log::debug(implode(';', $response));
+                Log::debug('Authentication cookies: ' . $response);
                 if ($response['status'] == 200) {
                     Log::debug('Cookies are retrieved');
                     $oxy_kratos_session = reset($response['cookie']);
