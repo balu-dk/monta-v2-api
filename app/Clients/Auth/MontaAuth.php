@@ -133,9 +133,6 @@ class MontaAuth
                 'status' => 500,
                 'message' => $e->getMessage()
             ];
-        } catch (ConnectionException $e) {
-            'status' => 500,
-                'message' => $e->getMessage()
         }
     }
 
