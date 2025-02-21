@@ -106,7 +106,7 @@ class MontaClient
         return MontaLocations::listCountries($id, MontaAuth::getDatabaseCookies($operator));
     }
 
-    public static function getChargepointBySerialNumber($id, $serialNumber, $cookies): array {
+    public static function getChargepointBySerialNumber($id, $serialNumber): array {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
             return [];
         }
@@ -117,6 +117,8 @@ class MontaClient
                 'message' => 'Unauthorized',
             ];
         }
+
+        $cookies = self::cookies($id);
 
         $chargers = MontaChargepoints::listChargepoints($id, $serialNumber, $cookies, 1);
 
@@ -142,7 +144,6 @@ class MontaClient
         string $phone,
         string|int $model,
         string|int $kw,
-        array $cookies,
         string|int|null $plan = null
     ): array {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
@@ -158,6 +159,8 @@ class MontaClient
                 'message' => 'Unauthorized',
             ];
         }
+
+        $cookies = self::cookies($id);
 
         $countries = MontaClient::countries($id);
         if (!in_array($country, $countries)) {
@@ -306,7 +309,7 @@ class MontaClient
 
     }
 
-    public static function setWebsocket($id, $serialNumber, $websocket, $cookies): array {
+    public static function setWebsocket($id, $serialNumber, $websocket): array {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
             return [];
         }
@@ -317,6 +320,8 @@ class MontaClient
                 'message' => 'Unauthorized',
             ];
         }
+
+        $cookies = self::cookies($id);
 
         $charger = self::getChargepointBySerialNumber($id, $serialNumber, $cookies);
 
@@ -336,7 +341,7 @@ class MontaClient
         return MontaClient::setWebsocket($id, $serialNumber, $configuration, $cookies);
     }
 
-    public static function listSubscriptions(string|int $id, array $cookies, bool $chargepointType = false): array {
+    public static function listSubscriptions(string|int $id, bool $chargepointType = false): array {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
             return [];
         }
@@ -347,6 +352,8 @@ class MontaClient
                 'message' => 'Unauthorized',
             ];
         }
+
+        $cookies = self::cookies($id);
 
         $plans = MontaPlans::listPlans($id, $cookies, $chargepointType);
 
@@ -360,7 +367,7 @@ class MontaClient
         return $plans;
     }
 
-    public static function listSubscriptionsByChargepoint(string|int $id, string $chargepointId, array $cookies): array {
+    public static function listSubscriptionsByChargepoint(string|int $id, string $chargepointId): array {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
             return [];
         }
@@ -371,6 +378,8 @@ class MontaClient
                 'message' => 'Unauthorized',
             ];
         }
+
+        $cookies = self::cookies($id);
 
         $plans = MontaPlans::listPlans($id, $cookies, true, $chargepointId);
 
@@ -384,7 +393,7 @@ class MontaClient
         return $plans;
     }
 
-    public static function addChargepointToSubscription($id, $cookies, $plan, $chargePointId): array
+    public static function addChargepointToSubscription($id, $plan, $chargePointId): array
     {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
             return [];
@@ -396,6 +405,8 @@ class MontaClient
                 'message' => 'Unauthorized',
             ];
         }
+
+        $cookies = self::cookies($id);
 
         $response = MontaPlans::addToPlan($id, $cookies, $plan, $chargePointId);
 
@@ -409,7 +420,7 @@ class MontaClient
         return $response;
     }
 
-    public static function getCurrentUser($id, $cookies): array {
+    public static function getCurrentUser($id): array {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
             return [];
         }
@@ -421,6 +432,8 @@ class MontaClient
             ];
         }
 
-        MontaAuth::getUser(MontaClient::cookies($id));
+        $cookies = self::cookies($id);
+
+        MontaAuth::getUser($cookies);
     }
 }

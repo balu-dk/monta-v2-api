@@ -48,56 +48,9 @@ Route::prefix('portal')->group(function () {
                 $request->phone,
                 $request->model,
                 $request->kw,
-                MontaClient::cookies($request->id),
                 $request->plan ?? null
         ));
     });
-});
-
-Route::get('teams/{team}/pricegroups', function (string $team, Request $request) {
-    $request->validate([
-        'id' => 'required',
-    ]);
-
-    return response()->json(\App\Clients\Portal\MontaTeams::listPriceGroupsForTeam($request->id, $team, MontaClient::cookies($request->id))[0]['id']);
-});
-
-Route::get('users', function (Request $request) {
-    $request->validate([
-        'id' => 'required',
-        'search' => 'required',
-    ]);
-
-    return response()->json(\App\Clients\Portal\MontaUsers::listUsers($request->id, $request->search, MontaClient::cookies($request->id)));
-});
-
-Route::post('teams/{team}/groups/', function (string $team, Request $request) {
-    $request->validate([
-        'id' => 'required',
-    ]);
-
-    $cookies = MontaClient::cookies($request->id);
-    return response()->json(MontaTeams::createMemberGroup($request->id, $team, 'Owner', true, true, false, false, true, $cookies));
-});
-
-Route::post('teams/{team}/members/', function (string $team, Request $request) {
-    $request->validate([
-        'id' => 'required',
-    ]);
-
-    $cookies = MontaClient::cookies($request->id);
-    return response()->json(MontaTeams::inviteMemberToTeam($request->id, $team, 'admin', '+4583729105', '4934813', '4530', $cookies));
-});
-
-Route::post('teams/{team}/members/group', function (string $team, Request $request) {
-    $request->validate([
-        'id' => 'required',
-        'member' => 'required',
-        'group' => 'required',
-    ]);
-
-    $cookies = MontaClient::cookies($request->id);
-    return response()->json(MontaTeams::addTeamMemberToGroup($request->id, $request->member, $request->group, $cookies));
 });
 
 Route::get('chargepoints/{chargepoint}', function (string $chargepoint, Request $request) {
@@ -105,8 +58,7 @@ Route::get('chargepoints/{chargepoint}', function (string $chargepoint, Request 
         'id' => 'required',
     ]);
 
-    $cookies = MontaClient::cookies($request->id);
-    return response()->json(MontaClient::getChargepointBySerialNumber($request->id, $chargepoint, $cookies));
+    return response()->json(MontaClient::getChargepointBySerialNumber($request->id, $chargepoint));
 });
 
 Route::get('countries', function (Request $request) {
@@ -125,19 +77,11 @@ Route::get('models', function (Request $request) {
     return response()->json(MontaClient::models($request->id));
 });
 
-Route::get('auth', function (Request $request) {
-    $request->validate([
-        'id' => 'required',
-    ]);
-
-    return response()->json(MontaClient::cookies($request->id));
-});
-
 Route::get('user', function (Request $request) {
     $request->validate([
         'id' => 'required',
     ]);
-    return response()->json(MontaClient::getCurrentUser($request->id, MontaClient::cookies($request->id)));
+    return response()->json(MontaClient::getCurrentUser($request->id));
 });
 
 Route::post('ocpp/{serialNumber}', function (string $serialNumber, Request $request) {
@@ -146,7 +90,7 @@ Route::post('ocpp/{serialNumber}', function (string $serialNumber, Request $requ
         'url' => 'required',
     ]);
 
-    return response()->json(MontaClient::setWebsocket($request->id, $serialNumber, $request->url, MontaClient::cookies($request->id)));
+    return response()->json(MontaClient::setWebsocket($request->id, $serialNumber, $request->url));
 });
 
 Route::get('subscriptions', function (Request $request) {
@@ -154,40 +98,12 @@ Route::get('subscriptions', function (Request $request) {
         'id' => 'required',
     ]);
 
-    $cookies = MontaClient::cookies($request->id);
-    return response()->json(MontaClient::listSubscriptions($request->id, $cookies, isset($request->chargepoint) ? $request->chargepoint : false));
+    return response()->json(MontaClient::listSubscriptions($request->id, isset($request->chargepoint) ? $request->chargepoint : false));
 });
 
 Route::get('subscriptions/{chargepointId}', function (string $chargepointId, Request $request) {
     $request->validate([
         'id' => 'required',
     ]);
-
-    $cookies = MontaClient::cookies($request->id);
-    return response()->json(MontaClient::listSubscriptionsByChargepoint($request->id, $chargepointId, $cookies));
-});
-
-Route::post('chargepoint', function (Request $request) {
-    $request->validate([
-        'id' => 'required',
-        'name' => 'required',
-        'team' => 'required',
-        'model' => 'required',
-        'kw' => 'required',
-        'address' => 'required',
-        'zipcode' => 'required',
-        'city' => 'required',
-        'country' => 'required',
-    ]);
-
-    $cookies = MontaClient::cookies($request->id);
-    return response()->json(MontaChargepoints::create(
-        $request->id,
-        $request->name,
-        $request->team,
-        $request->model,
-        $request->kw,
-        MontaLocations::GetLocationID($request->id, "{$request->address}, {$request->zipcode} {$request->city}", $cookies),
-        $cookies
-    ));
+    return response()->json(MontaClient::listSubscriptionsByChargepoint($request->id, $chargepointId));
 });
