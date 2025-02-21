@@ -264,7 +264,7 @@ class MontaAuth
                 $response = self::getAuthenticationCookies($id, $csrf_token, $email, $password, [$cookieKey => $cookieValue]);
                 Log::debug('Authentication cookies: ' . reset($response['cookie']));
                 if ($response['status'] == 200) {
-                    Log::debug('Cookies are retrieved');
+                    Log::debug('Authentication cookies was successfully retrieved');
                     $oxy_kratos_session = reset($response['cookie']);
                     Log::debug('Oxy kratos session: ' . reset($response['cookie']));
                     $session = self::getSession($cookieKey, $cookieValue, $oxy_kratos_session);
