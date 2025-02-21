@@ -81,6 +81,7 @@ Route::get('user', function (Request $request) {
     $request->validate([
         'id' => 'required',
     ]);
+    \Illuminate\Support\Facades\Log::debug('Retrieving user with id: ' . $request->id);
     return response()->json(MontaClient::getCurrentUser($request->id));
 });
 
