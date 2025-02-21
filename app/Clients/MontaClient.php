@@ -46,6 +46,7 @@ class MontaClient
 
         $cookies = self::cookies($id);
         [$status, $authentication] = MontaAuth::authenticate($operator, $cookies);
+        Log::debug('Authentication: ' . $status);
 
         return $authentication;
     }
