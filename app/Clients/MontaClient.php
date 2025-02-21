@@ -426,6 +426,7 @@ class MontaClient
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
             return [];
         }
+        Log::debug('Operator exists on ID ' . $id . '!');
         $authenticated = self::authenticate($id);
         Log::debug('Authenticated: ' . $authenticated);
         if(!$authenticated) {
