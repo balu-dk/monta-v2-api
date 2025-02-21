@@ -78,6 +78,8 @@ class MontaAuth
                 }
             }
 
+            Log::debug('Oxy kratos session: ' . $oxy_kratos_session);
+
             if ($response->status() == 200) {
                 return [
                     "status" => $response->status(),
