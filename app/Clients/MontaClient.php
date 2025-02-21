@@ -355,7 +355,7 @@ class MontaClient
     }
 
     public static function listSubscriptions(string|int $id, bool $chargepointType = false): array {
-        if (!$id || !Operator::where('operator_id', $id)->exists()) {
+        if (!$id || !Operator::where('operator_id', (int)$id)->exists()) {
             return [
                 'status' => 404,
                 'message' => 'Operator not found'
