@@ -187,9 +187,15 @@ class MontaAuth
                 'monta_session' => self::parseCookies($response->headers()['set-cookie'][1])['monta_session'],
             ];
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-            return $e->getMessage();
+            return [
+                'status' => 500,
+                'message' => $e->getMessage()
+            ];
         } catch (ConnectionException $e) {
-            return $e->getMessage();
+            return [
+                'status' => 500,
+                'message' => $e->getMessage()
+            ];
         }
     }
 
@@ -260,7 +266,7 @@ class MontaAuth
                     $oxy_kratos_session = reset($response['cookie']);
 
                     $session = self::getSession($cookieKey, $cookieValue, $oxy_kratos_session);
-                    if ($response['status'] == 200) {
+                    if ($session['status'] == 200) {
                         $xsrf_token = $session['XSRF-Token'];
                         $monta_session = $session['monta_session'];
 
