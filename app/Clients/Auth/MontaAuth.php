@@ -137,6 +137,9 @@ class MontaAuth
 
     public static function isLoggedIn($cookies) {
         try {
+            if (!isset($cookies['csrfTokenKey']) || !isset($cookies['csrfTokenValue']) || !isset($cookies['oxyKratosSession']) || !isset($cookies['xsrfToken']) || !isset($cookies['montaSession'])) {
+                return false;
+            }
             $csrf_token_key = $cookies['csrfTokenKey'];
             $csrf_token_value = $cookies['csrfTokenValue'];
             $oxy_kratos_session = $cookies['oxyKratosSession'];
