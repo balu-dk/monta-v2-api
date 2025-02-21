@@ -30,7 +30,7 @@ class MontaAuth
                 }
             }
             $cookies = self::parseCookies($response->headers()['set-cookie'][0]);
-            Log::debug(implode($cookies));
+            Log::debug($cookies);
             return [
                 'status' => '200',
                 'id' => $id,
