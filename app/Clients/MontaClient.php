@@ -422,6 +422,7 @@ class MontaClient
     }
 
     public static function getCurrentUser($id): array {
+        Log::debug('Getting current user with ID ' . $id . '...');
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
             return [];
         }
