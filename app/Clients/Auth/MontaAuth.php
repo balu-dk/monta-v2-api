@@ -38,8 +38,10 @@ class MontaAuth
                 ],
             ];
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
+            Log::error($e->getMessage());
             return $e->getMessage();
         } catch (ConnectionException $e) {
+            Log::error($e->getMessage());
             return $e->getMessage();
         }
     }
