@@ -125,13 +125,17 @@ class MontaAuth
                 ->withOptions([
                     'cookies' => $cookieJar
                 ])
-                ->get('https://portal-v2.monta.app/api/v1/users/me')
-                ->json();
-            return $response;
+                ->get('https://portal-v2.monta.app/api/v1/users/me');
+
+            return $response->json();
         } catch (\GuzzleHttp\Exception\GuzzleException $e) {
-            return $e->getMessage();
+            return [
+                'status' => 500,
+                'message' => $e->getMessage()
+            ];
         } catch (ConnectionException $e) {
-            return $e->getMessage();
+            'status' => 500,
+                'message' => $e->getMessage()
         }
     }
 
