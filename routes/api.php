@@ -131,7 +131,7 @@ Route::get('operators', function () {
     return response()->json([
         'status' => '200',
         'message' => 'Successfully retrieved operators',
-        'data' => \App\Models\Operator::all()->pluck('name', 'operator_id')->pluck('name', 'operator_id')->mapWithKeys(function ($item, $key) {
+        'data' => \App\Models\Operator::all()->pluck('name', 'operator_id')->mapWithKeys(function ($item, $key) {
             return [
                 'id' => $key,
                 'name'=> $item];
