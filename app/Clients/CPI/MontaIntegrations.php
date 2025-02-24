@@ -17,7 +17,7 @@ class MontaIntegrations {
 
         $response = Http::withOptions([
             'cookies' => $cookieJar
-        ])->get("https://app.monta.app/cpis/start/" . $chargepointID);
+        ])->withoutRedirecting()->get("https://app.monta.app/cpis/start/" . $chargepointID);
 
         if ($response->status() == 200) {
             if (isset($response->headers()['location'])) {
