@@ -483,16 +483,8 @@ class MontaClient
 
         $cookies = self::cookies($id);
 
-        try {
-            return [
-                'status' => 200,
-                'message' => MontaIntegrations::getIntegrationLink($cookies, $chargepointID),
-            ];
-        } catch (\Exception $e) {
-            return [
-                'status' => 500,
-                'message' => $e->getMessage(),
-            ];
-        }
+        $integration = MontaIntegrations::getIntegrationLink($cookies, $chargepointID);
+
+        return $integration;
     }
 }

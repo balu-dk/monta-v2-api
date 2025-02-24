@@ -21,8 +21,18 @@ class MontaIntegrations {
 
         if ($response->status() == 200) {
             if (isset($response->headers()['location'])) {
-                return $response->headers()['location'];
+                return [
+                    'status' => '200',
+                    'message' => 'Successfully got integration link',
+                    'response' => $response->headers()['location']
+                ];
             }
         }
+
+        return [
+            'status' => '401',
+            'message' => 'Failed to get integration link',
+            'response' => $response->headers()
+        ];
     }
 }
