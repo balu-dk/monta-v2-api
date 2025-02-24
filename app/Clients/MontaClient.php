@@ -219,7 +219,7 @@ class MontaClient
         $subscription = [];
         // Add chargepoint to subscription plan if needed
         if ($plan != null) {
-            $subscription = self::addChargepointToSubscription($id, $cookies, $plan, $chargepoint['message']['id']);
+            $subscription = self::addChargepointToSubscription($id, $plan, $chargepoint['message']['id']);
 
             if (!isset($subscription['id']) || !$subscription['id']) {
                 return [

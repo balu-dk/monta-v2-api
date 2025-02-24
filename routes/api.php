@@ -40,6 +40,10 @@ Route::prefix('portal')->group(function () {
             $plan = $request->plan;
         }
 
+        \Illuminate\Support\Facades\Log::debug(
+            'Creating customer with id: ' . $request->id . ' type: ' . $type . ' name: ' . $request->name . ' address: ' . $request->address . ' zipcode: ' . $request->zipcode . ' city: ' . $request->city . ' country: ' . $request->country . ' email: ' . $request->email . ' phone: ' . $request->phone . ' model: ' . $request->model . ' kw: ' . $request->kw . ' plan: ' . $plan
+        );
+
         return response()->json(
             MontaClient::createCustomer(
                 $request->id,
