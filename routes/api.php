@@ -14,11 +14,12 @@ Route::prefix('portal')->group(function () {
     Route::post('operator', function (Request $request) {
         $request->validate([
             'id' => 'required',
+            'name' => 'required',
             'email' => 'required',
             'password' => 'required',
         ]);
 
-        return response()->json(MontaClient::createOperator($request->id, $request->email, $request->password));
+        return response()->json(MontaClient::createOperator($request->id, $request->name, $request->email, $request->password));
     });
 
     Route::post('customer/{type}', function (string $type, Request $request) {

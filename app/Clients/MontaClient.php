@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Log;
 class MontaClient
 {
 
-    public static function createOperator($id, $email, $password)
+    public static function createOperator($id, $name, $email, $password)
     {
         if (Operator::where('operator_id', $id)->exists()) {
             return [
@@ -26,6 +26,7 @@ class MontaClient
 
         $operator = Operator::create([
             'operator_id' => (int)$id,
+            'name' => $name,
             'email' => Crypt::encrypt($email),
             'password' => Crypt::encrypt($password),
         ]);
