@@ -23,14 +23,14 @@ class MontaIntegrations {
             return [
                 'status' => '200',
                 'message' => 'Successfully got integration link',
-                'response' => $response->headers()['location']
+                'link' => $response->headers()['location']
             ];
         }
 
         return [
             'status' => '401',
             'message' => 'Failed to get integration link',
-            'response' => $response->headers()
+            'headers' => $response->headers()
         ];
     }
 }
