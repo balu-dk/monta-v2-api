@@ -2,6 +2,7 @@
 
 namespace App\Clients;
 use App\Clients\Auth\MontaAuth;
+use App\Clients\CPI\MontaIntegrations;
 use App\Clients\Portal\MontaChargepoints;
 use App\Clients\Portal\MontaLocations;
 use App\Clients\Portal\MontaPlans;
@@ -463,5 +464,32 @@ class MontaClient
         $cookies = self::cookies($id);
 
         return MontaAuth::getUser($cookies);
+    }
+
+    public static function getIntegrationFromChargepointId($id, $chargepointID): array {
+        if (!$id || !Operator::where('operator_id', $id)->exists()) {
+            return [
+                'status' => 404,
+                'message' => 'Operator not found'
+            ];
+        }
+
+        if(!self::authenticate($id)) {
+            return [
+                'status' => 401,
+                'message' => 'Unauthorized: User not authenticated',
+            ];
+        }
+
+        $cookies = self::cookies($id);
+
+        try {
+            return MontaIntegrations::getIntegrationLink($cookies, $chargepointID);
+        } catch (\Exception $e) {
+            return [
+                'status' => 500,
+                'message' => $e->getMessage(),
+            ];
+        }
     }
 }
