@@ -75,7 +75,7 @@ class MontaClient
         if(!self::authenticate($id)) {
             return [
                 'status' => 401,
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized: User not authenticated',
             ];
         }
 
@@ -93,7 +93,7 @@ class MontaClient
         if(!self::authenticate($id)) {
             return [
                 'status' => 401,
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized: User not authenticated',
             ];
         }
 
@@ -109,7 +109,7 @@ class MontaClient
         if(!self::authenticate($id)) {
             return [
                 'status' => 401,
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized: User not authenticated',
             ];
         }
 
@@ -127,7 +127,7 @@ class MontaClient
         if(!self::authenticate($id)) {
             return [
                 'status' => 401,
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized: User not authenticated',
             ];
         }
 
@@ -169,7 +169,7 @@ class MontaClient
         if(!self::authenticate($id)) {
             return [
                 'status' => 401,
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized: User not authenticated',
             ];
         }
 
@@ -330,7 +330,7 @@ class MontaClient
         if(!self::authenticate($id)) {
             return [
                 'status' => 401,
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized: User not authenticated',
             ];
         }
 
@@ -365,7 +365,7 @@ class MontaClient
         if(!self::authenticate($id)) {
             return [
                 'status' => 401,
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized: User not authenticated',
             ];
         }
 
@@ -394,7 +394,7 @@ class MontaClient
         if(!self::authenticate($id)) {
             return [
                 'status' => 401,
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized: User not authenticated',
             ];
         }
 
@@ -424,7 +424,7 @@ class MontaClient
         if(!self::authenticate($id)) {
             return [
                 'status' => 401,
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized: User not authenticated',
             ];
         }
 
@@ -456,7 +456,7 @@ class MontaClient
         if(!$authenticated) {
             return [
                 'status' => 401,
-                'message' => 'Unauthorized',
+                'message' => 'Unauthorized: User not authenticated',
             ];
         }
 
