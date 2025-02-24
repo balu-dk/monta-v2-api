@@ -35,6 +35,11 @@ Route::prefix('portal')->group(function () {
             'kw' => 'required',
         ]);
 
+        $plan = null;
+        if (isset($request->plan)) {
+            $plan = $request->plan;
+        }
+
         return response()->json(
             MontaClient::createCustomer(
                 $request->id,
@@ -48,7 +53,7 @@ Route::prefix('portal')->group(function () {
                 $request->phone,
                 $request->model,
                 $request->kw,
-                $request->plan ?? null
+                $plan
         ));
     });
 });

@@ -157,7 +157,7 @@ class MontaClient
         string $phone,
         string|int $model,
         string|int $kw,
-        string|int|null $plan = null
+        string|null $plan = null
     ): array {
         if (!$id || !Operator::where('operator_id', $id)->exists()) {
             return [
