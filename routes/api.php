@@ -125,3 +125,11 @@ Route::get('integrations/{chargepointId}', function (string $chargepointID, Requ
 
     return response()->json(MontaClient::getIntegrationFromChargepointId($request->id, $chargepointID));
 });
+
+Route::get('operators', function (Request $request) {
+    return response()->json([
+        'status' => '200',
+        'message' => 'Successfully retrieved operators',
+        'data' => \App\Models\Operator::all()->pluck('name', 'id')
+    ]);
+});
