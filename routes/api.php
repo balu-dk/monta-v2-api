@@ -131,6 +131,6 @@ Route::get('operators', function () {
     return response()->json([
         'status' => '200',
         'message' => 'Successfully retrieved operators',
-        'data' => \App\Models\Operator::all()->pluck('name', 'operator_id')
+        'data' => \App\Models\Operator::all()->pluck('name', 'operator_id')->pluck('name', 'operator_id')
     ]);
 });
