@@ -9,6 +9,7 @@ class Operator extends Model
 
     protected $fillable = [
         'operator_id',
+        'name',
         'email',
         'password',
         'csrf_token_key',
