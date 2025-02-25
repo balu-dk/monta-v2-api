@@ -3,6 +3,7 @@
 use App\Clients\Portal\MontaChargepoints;
 use App\Clients\Portal\MontaLocations;
 use App\Clients\Portal\MontaTeams;
+use App\Http\Middleware\ApiKeyMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Clients\MontaClient;
@@ -119,7 +120,7 @@ Route::get('subscriptions/{chargepointId}', function (string $chargepointId, Req
     return response()->json(MontaClient::listSubscriptionsByChargepoint($request->id, $chargepointId));
 });
 
-Route::get('integrations/{chargepointId}', function (string $chargepointID, Request $request) {
+Route::withoutMiddleware(ApiKeyMiddleware::class)->get('integrations/{chargepointId}', function (string $chargepointID, Request $request) {
     $request->validate([
         'id' => 'required',
     ]);
