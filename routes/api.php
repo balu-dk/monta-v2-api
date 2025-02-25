@@ -126,7 +126,7 @@ Route::get('integrations/{chargepointId}', function (string $chargepointID, Requ
     ]);
 
     return response()->json(MontaClient::getIntegrationFromChargepointId($request->id, $chargepointID));
-})->withoutMiddleware([ApiKeyMiddleware::class]);
+});
 
 Route::get('operators', function () {
     return response()->json([
