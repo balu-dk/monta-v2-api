@@ -120,13 +120,13 @@ Route::get('subscriptions/{chargepointId}', function (string $chargepointId, Req
     return response()->json(MontaClient::listSubscriptionsByChargepoint($request->id, $chargepointId));
 });
 
-Route::withoutMiddleware(ApiKeyMiddleware::class)->get('integrations/{chargepointId}', function (string $chargepointID, Request $request) {
+Route::get('integrations/{chargepointId}', function (string $chargepointID, Request $request) {
     $request->validate([
         'id' => 'required',
     ]);
 
     return response()->json(MontaClient::getIntegrationFromChargepointId($request->id, $chargepointID));
-});
+})->withoutMiddleware([ApiKeyMiddleware::class]);
 
 Route::get('operators', function () {
     return response()->json([
