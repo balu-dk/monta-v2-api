@@ -105,6 +105,32 @@ class MontaIntegrations {
             ];
         }
 
+        $data = MontaIntegrations::listIntegrations();
+        if ($data['status'] !== '200') {
+            return [
+                'status' => '401',
+                'message' => 'Failed to get integrations',
+                'error' => $data['error']
+            ];
+        }
+
+        $integrations = $data['data'];
+
+
+        $chargePointIntegrations = collect($integrations)
+            ->filter(function ($brand) {
+                return $brand['slug'] === 'zaptec'; // Filter by brand
+            })
+            ->flatMap(function ($brand) {
+                return $brand['models']; // Extract models
+            })
+            ->filter(function ($model) {
+                return $model['slug'] === 'zaptec_go'; // Filter by model
+            })
+            ->flatMap(function ($model) {
+                return $model['integrations']; // Extract integrations
+            })
+            ->all();
         return [
             'status' => '200',
             'message' => 'Successfully got integration data from URL',
@@ -113,7 +139,7 @@ class MontaIntegrations {
                 'charge_point_identifier' => $queryParams['charge_point_identifier'] ?? null,
                 'charge_point_model_identifier' => $chargePointModelIdentifier,
                 'charge_point_brand' => $chargePointBrand,
-                'integrations' => MontaIntegrations::listIntegrations()
+                'integrations' => $chargePointIntegrations
             ]
         ];
     }
