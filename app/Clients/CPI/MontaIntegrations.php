@@ -130,7 +130,13 @@ class MontaIntegrations {
             ->flatMap(function ($model) {
                 return $model['integrations']; // Extract integrations
             })
+            ->map(function ($integration) {
+                $integration['type'] = strtolower($integration['type']); // Convert type to lowercase
+                return $integration;
+            })
             ->all();
+
+
         return [
             'status' => '200',
             'message' => 'Successfully got integration data from URL',
