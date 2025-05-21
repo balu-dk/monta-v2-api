@@ -120,7 +120,7 @@ Route::get('subscriptions/{chargepointId}', function (string $chargepointId, Req
     return response()->json(MontaClient::listSubscriptionsByChargepoint($request->id, $chargepointId));
 });
 
-Route::get('test/url', function (Request $request) {
+Route::get('url', function (Request $request) {
     $request->validate([
         'url' => 'required',
     ]);
