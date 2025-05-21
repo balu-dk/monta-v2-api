@@ -66,6 +66,27 @@ class MontaIntegrations {
             ];
         }
 
+        if (empty($queryParams['user_identifier'])) {
+            return [
+                'status' => '400',
+                'message' => 'user_identifier is missing'
+            ];
+        }
+
+        if (empty($queryParams['charge_point_identifier'])) {
+            return [
+                'status' => '400',
+                'message' => 'charge_point_identifier is missing'
+            ];
+        }
+
+        if (empty($chargePointModelIdentifier)) {
+            return [
+                'status' => '400',
+                'message' => 'charge_point_model_identifier is missing'
+            ];
+        }
+
         return [
             'status' => '200',
             'message' => 'Successfully got integration data from URL',
@@ -73,6 +94,7 @@ class MontaIntegrations {
                 'user_identifier' => $queryParams['user_identifier'] ?? null,
                 'charge_point_identifier' => $queryParams['charge_point_identifier'] ?? null,
                 'charge_point_model_identifier' => $chargePointModelIdentifier,
+                'charge_point_brand' => $chargePointBrand,
             ]
         ];
     }

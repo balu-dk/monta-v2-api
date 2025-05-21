@@ -120,16 +120,22 @@ Route::get('subscriptions/{chargepointId}', function (string $chargepointId, Req
     return response()->json(MontaClient::listSubscriptionsByChargepoint($request->id, $chargepointId));
 });
 
+Route::get('integrations/url', function (Request $request) {
+    $request->validate([
+        'url' => 'required',
+    ]);
+
+    $url = $request->url;
+
+    return response()->json(MontaClient::getIntegrationDataFromURL($url));
+});
+
 Route::get('integrations/{chargepointId}', function (string $chargepointID, Request $request) {
     $request->validate([
         'id' => 'required',
     ]);
 
     return response()->json(MontaClient::getIntegrationFromChargepointId($request->id, $chargepointID));
-});
-
-Route::get('url/{url}', function (string $url) {
-    return response()->json(MontaClient::getIntegrationDataFromURL($url));
 });
 
 Route::get('operators', function () {
