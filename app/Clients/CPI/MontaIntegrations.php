@@ -151,4 +151,77 @@ class MontaIntegrations {
             ]
         ];
     }
+
+    protected static function generateUUID(): string {
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000, // 4xxx (UUID version 4)
+            mt_rand(0, 0x3fff) | 0x8000, // yxxx (UUID variant 1)
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        );
+    }
+
+    public static function integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType): array {
+        $headers = [
+            'Operator' => 'monta',
+            'Accept' => 'application/json',
+            'Timezone' => 'Europe/Copenhagen',
+            'UUID' => self::generateUUID(),
+            'Meta' => 'web;production;1.2.0;browser;chrome%20MacIntel',
+            'Accept-Language' => 'da',
+            'Content-Type' => 'application/json'
+        ];
+
+        $payload = [
+            'user_identifier' => $userIdentifier,
+            'charge_point_identifier' => $chargePointIdentifier,
+            'charge_point_model_identifier' => $chargePointModelIdentifier,
+            'connector_id' => 1,
+            'integration_type' => $integrationType
+        ];
+
+        $endpoint = 'https://integrations-api.monta.app/api/v1/charge-points/' . $serialNumber . '/integrations';
+
+        $response = Http::withHeaders($headers)->post($endpoint, $payload);
+
+        if (!$response->successful()) {
+            return [
+                'status' => 401,
+                'message' => 'Failed to create integration',
+                'error' => $response->json()
+            ];
+        }
+
+        return [
+            'status' => 200,
+            'message' => 'Successfully created integration',
+            'data' => $response->json()
+        ];
+    }
+
+    public static function validateIntegration(string $serialNumber): array {
+        $endpoint = 'https://integrations-api.monta.app/api/integrations/ZAPTEC_CLOUD/charge_point/' . $serialNumber . '/validate';
+
+        $response = Http::get($endpoint);
+
+        $data = $response->json();
+
+        if (!$response->successful()) {
+            return [
+                'status' => 401,
+                'message' => 'Failed to validate integration',
+                'error' => $data['readable_message']
+            ];
+        }
+
+        return [
+            'status' => 200,
+            'message' => 'Successfully validated integration',
+            'data' => $data
+        ];
+    }
+
+
 }

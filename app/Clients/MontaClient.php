@@ -492,4 +492,45 @@ class MontaClient
     public static function getIntegrationDataFromURL($integrationURL): array {
         return MontaIntegrations::getIntegrationFromURL($integrationURL);
     }
+
+    public static function integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType): array {
+        $integration = MontaIntegrations::integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType);
+
+        if (!$integration['status'] == 200) {
+            return [
+                'status' => $integration['status'],
+                'message' => $integration['message'],
+                'error' => $integration['error']
+            ];
+        }
+
+        $keepValidating = true;
+        $iterations = 0;
+        while ($keepValidating && $iterations < 10) {
+            $validation = MontaIntegrations::validateIntegration($serialNumber);
+            if ($validation['status'] == 200) {
+                $keepValidating = false;
+            } else {
+                sleep(5);
+                $iterations++;
+            }
+        }
+
+        if ($keepValidating) {
+            return [
+                'status' => 401,
+                'message' => 'Failed to validate integration',
+                'error' => $validation['error']
+            ];
+        }
+
+        return [
+            'status' => 200,
+            'message' => 'Successfully integrated & validated integration',
+            'data' => [
+                'integration' => $integration['data'],
+                'validation' => $validation['data']
+            ]
+        ];
+    }
 }
