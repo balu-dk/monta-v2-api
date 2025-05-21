@@ -490,6 +490,7 @@ class MontaClient
     }
 
     public static function getIntegrationDataFromURL($integrationURL): array {
-        return MontaIntegrations::getIntegrationFromURL($integrationURL);
+        $data = MontaIntegrations::getIntegrationFromURL($integrationURL);
+        return $data;
     }
 }
