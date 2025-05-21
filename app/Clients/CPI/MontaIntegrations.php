@@ -34,6 +34,24 @@ class MontaIntegrations {
         ];
     }
 
+    public static function listIntegrations(): array {
+        $response = Http::get("https://integrations-api.monta.app/api/integrations/");
+
+        if ($response->successful()) {
+            return [
+                'status' => '200',
+                'message' => 'Successfully got integrations',
+                'data' => $response->json()
+            ];
+        }
+
+        return [
+            'status' => '401',
+            'message' => 'Failed to get integrations',
+            'error' => $response->json()
+        ];
+    }
+
     public static function getIntegrationFromURL(string $integrationURL): array {
         if (empty($integrationURL)) {
             return [
@@ -95,6 +113,7 @@ class MontaIntegrations {
                 'charge_point_identifier' => $queryParams['charge_point_identifier'] ?? null,
                 'charge_point_model_identifier' => $chargePointModelIdentifier,
                 'charge_point_brand' => $chargePointBrand,
+                'integrations' => MontaIntegrations::listIntegrations()
             ]
         ];
     }
