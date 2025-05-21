@@ -129,10 +129,6 @@ Route::get('integrations/{chargepointId}', function (string $chargepointID, Requ
 });
 
 Route::get('url/{url}', function (string $url, Request $request) {
-    $request->validate([
-        'id' => 'required',
-    ]);
-
     return response()->json(MontaClient::getIntegrationDataFromURL($url));
 });
 
