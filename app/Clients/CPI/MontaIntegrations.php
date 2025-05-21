@@ -134,7 +134,7 @@ class MontaIntegrations {
                 $integration['type'] = strtolower($integration['type']); // Convert type to lowercase
                 return $integration;
             })
-            ->all();
+            ->get('type');
 
 
         return [
