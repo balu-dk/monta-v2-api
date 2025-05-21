@@ -223,5 +223,59 @@ class MontaIntegrations {
         ];
     }
 
+    public static function pairChargePoint(string $serialNumber, $username, $password, $brand, $model): array {
+        $endpoint = 'https://integrations-api.monta.app/api/integrations/zaptec_cloud/charge_point?=' . $serialNumber;
 
+        $headers = [
+            'Authorization' => 'Basic ' . base64_encode($username . ':' . $password),
+            'Operator' => 'monta',
+            'Accept' => 'application/json',
+            'Timezone' => 'Europe/Copenhagen',
+            'UUID' => self::generateUUID(),
+            'Meta' => 'web;production;1.2.0;browser;chrome%20MacIntel',
+            'Accept-Language' => 'da',
+            'Content-Type' => 'application/json'
+        ];
+
+        $response = Http::withHeaders($headers)->get($endpoint);
+        $data = $response->json();
+
+        if (!$response->successful()) {
+            return [
+                'status' => 401,
+                'message' => 'Failed to authorize charge point',
+                'error' => $data
+            ];
+        }
+
+        if (empty($data) || !isset($data[0]['id'])) {
+            return [
+                'status' => 401,
+                'message' => 'Failed to find charge point',
+                'error' => $data
+            ];
+        }
+
+        $chargePointId = $data[0]['id'];
+
+        $endpoint = 'https://integrations-api.monta.app/api/integrations/zaptec_cloud/charge_point/' . $chargePointId . '/pair';
+        $response = Http::withHeaders($headers)->post($endpoint, [
+            'brand' => $brand,
+            'model' => $model,
+        ]);
+
+        if (!$response->successful()) {
+            return [
+                'status' => 401,
+                'message' => 'Failed to retrieve charge point',
+                'error' => $response->json()
+            ];
+        }
+
+        return [
+            'status' => 200,
+            'message' => 'Successfully paired charge point',
+            'data' => $response->json()
+        ];
+    }
 }

@@ -493,7 +493,7 @@ class MontaClient
         return MontaIntegrations::getIntegrationFromURL($integrationURL);
     }
 
-    public static function integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType): array {
+    public static function integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType, $chargepoint = null): array {
         $integration = MontaIntegrations::integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType);
 
         if ($integration['status'] !== 200) {
