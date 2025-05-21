@@ -34,7 +34,7 @@ class MontaIntegrations {
         ];
     }
 
-    public function getIntegrationFromURL(string $integrationURL): array {
+    public static function getIntegrationFromURL(string $integrationURL): array {
         if (empty($integrationURL)) {
             return [
                 'status' => '400',
