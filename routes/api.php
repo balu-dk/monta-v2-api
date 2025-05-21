@@ -133,7 +133,7 @@ Route::get('url/{url}', function (string $url, Request $request) {
         'id' => 'required',
     ]);
 
-    return response()->json(MontaClient::getIntegrationDataFromURL($request->id, $url));
+    return response()->json(MontaClient::getIntegrationDataFromURL($url));
 });
 
 Route::get('operators', function () {
