@@ -493,7 +493,7 @@ class MontaClient
         return MontaIntegrations::getIntegrationFromURL($integrationURL);
     }
 
-    public static function integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType, $chargepoint = null): array {
+    public static function integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType, $chargePointBrand = null): array {
         $integration = MontaIntegrations::integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType);
 
         if ($integration['status'] !== 200) {
@@ -502,6 +502,20 @@ class MontaClient
                 'message' => $integration['message'],
                 'error' => $integration['error']
             ];
+        }
+
+        // Check if pairing is needed
+        if ($chargePointBrand == 'zaptec') {
+            $basicAuth = env('BASIC_AUTH');
+            $response = MontaIntegrations::pairChargePoint($serialNumber, $basicAuth, $chargePointBrand, $chargePointModelIdentifier);
+
+            if ($response['status'] !== 200) {
+                return [
+                    'status' => $response['status'],
+                    'message' => $response['message'],
+                    'error' => $response['error']
+                ];
+            }
         }
 
         for ($iterations = 0; $iterations < 10; $iterations++) {

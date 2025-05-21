@@ -223,11 +223,11 @@ class MontaIntegrations {
         ];
     }
 
-    public static function pairChargePoint(string $serialNumber, $username, $password, $brand, $model): array {
+    public static function pairChargePoint(string $serialNumber, $auth, $brand, $model): array {
         $endpoint = 'https://integrations-api.monta.app/api/integrations/zaptec_cloud/charge_point?=' . $serialNumber;
 
         $headers = [
-            'Authorization' => 'Basic ' . base64_encode($username . ':' . $password),
+            'Authorization' => 'Basic ' . $auth,
             'Operator' => 'monta',
             'Accept' => 'application/json',
             'Timezone' => 'Europe/Copenhagen',
