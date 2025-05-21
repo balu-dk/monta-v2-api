@@ -496,7 +496,7 @@ class MontaClient
     public static function integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType): array {
         $integration = MontaIntegrations::integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType);
 
-        if (!$integration['status'] == 200) {
+        if ($integration['status'] !== 200) {
             return [
                 'status' => $integration['status'],
                 'message' => $integration['message'],
@@ -504,33 +504,25 @@ class MontaClient
             ];
         }
 
-        $keepValidating = true;
-        $iterations = 0;
-        while ($keepValidating && $iterations < 10) {
+        for ($iterations = 0; $iterations < 10; $iterations++) {
             $validation = MontaIntegrations::validateIntegration($serialNumber);
-            if ($validation['status'] == 200) {
-                $keepValidating = false;
-            } else {
-                sleep(5);
-                $iterations++;
+            if ($validation['status'] === 200) {
+                return [
+                    'status' => 200,
+                    'message' => 'Successfully integrated & validated integration',
+                    'data' => [
+                        'integration' => $integration['data'],
+                        'validation' => $validation['data']
+                    ]
+                ];
             }
-        }
-
-        if ($keepValidating) {
-            return [
-                'status' => 401,
-                'message' => 'Failed to validate integration',
-                'error' => $validation['error']
-            ];
+            sleep(5);
         }
 
         return [
-            'status' => 200,
-            'message' => 'Successfully integrated & validated integration',
-            'data' => [
-                'integration' => $integration['data'],
-                'validation' => $validation['data']
-            ]
+            'status' => 401,
+            'message' => 'Failed to validate integration',
+            'error' => $validation['error']
         ];
     }
 }
