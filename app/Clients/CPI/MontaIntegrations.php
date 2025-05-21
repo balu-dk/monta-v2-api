@@ -33,4 +33,47 @@ class MontaIntegrations {
             'headers' => $response->headers()
         ];
     }
+
+    public function getIntegrationFromURL(string $integrationURL): array {
+        if (empty($integrationURL)) {
+            return [
+                'status' => '400',
+                'message' => 'Integration URL is empty'
+            ];
+        }
+
+        try {
+            \Illuminate\Support\Facades\Log::debug($integrationURL);
+            // Parse the URL and get the path
+            $path = parse_url($integrationURL, PHP_URL_PATH);
+            $pathSegments = explode('/', trim($path, '/'));
+
+            // Extract the charge_point_model_identifier from the path
+            $chargePointModelIdentifier = $pathSegments[3] ?? null;
+            $chargePointBrand = $pathSegments[1] ?? null;
+
+            // Parse the URL and get the query string
+            $queryString = parse_url($integrationURL, PHP_URL_QUERY);
+
+            // Parse the query string into an associative array
+            parse_str($queryString, $queryParams);
+
+        } catch (\Exception $e) {
+            return [
+                'status' => '500',
+                'message' => 'Failed to get integration from URL',
+                'error' => $e->getMessage()
+            ];
+        }
+
+        return [
+            'status' => '200',
+            'message' => 'Successfully got integration data from URL',
+            'data' => [
+                'user_identifier' => $queryParams['user_identifier'] ?? null,
+                'charge_point_identifier' => $queryParams['charge_point_identifier'] ?? null,
+                'charge_point_model_identifier' => $chargePointModelIdentifier,
+            ]
+        ];
+    }
 }

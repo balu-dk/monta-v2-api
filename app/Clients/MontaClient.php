@@ -488,4 +488,22 @@ class MontaClient
 
         return $integration;
     }
+
+    public static function getIntegrationDataFromURL($id, $integrationURL): array {
+        if (!$id || !Operator::where('operator_id', $id)->exists()) {
+            return [
+                'status' => 404,
+                'message' => 'Operator not found'
+            ];
+        }
+
+        if(!self::authenticate($id)) {
+            return [
+                'status' => 401,
+                'message' => 'Unauthorized: User not authenticated',
+            ];
+        }
+
+        return MontaIntegrations::getIntegrationFromURL($integrationURL);
+    }
 }
