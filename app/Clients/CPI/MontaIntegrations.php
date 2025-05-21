@@ -61,7 +61,6 @@ class MontaIntegrations {
         }
 
         try {
-            \Illuminate\Support\Facades\Log::debug($integrationURL);
             // Parse the URL and get the path
             $path = parse_url($integrationURL, PHP_URL_PATH);
             $pathSegments = explode('/', trim($path, '/'));
