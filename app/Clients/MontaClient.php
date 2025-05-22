@@ -493,7 +493,13 @@ class MontaClient
         return MontaIntegrations::getIntegrationFromURL($integrationURL);
     }
 
-    public static function integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType, $chargePointBrand = null): array {
+    public static function integrateChargePoint(
+        $serialNumber,
+        $userIdentifier,
+        $chargePointIdentifier,
+        $chargePointModelIdentifier,
+        $integrationType,
+        $chargePointBrand = null): array {
         $integration = MontaIntegrations::integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType);
 
         if ($integration['status'] !== 200) {
@@ -505,7 +511,7 @@ class MontaClient
         }
 
         // Check if pairing is needed
-        if ($integrationType == 'zaptec_cloud') {
+        if ($integrationType == 'zaptec_cloud' && $chargePointBrand == 'zaptec') {
             $basicAuth = env('ZAPTEC');
             $response = MontaIntegrations::pairChargePoint($serialNumber, $basicAuth, $chargePointBrand, $chargePointModelIdentifier);
 

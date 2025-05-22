@@ -150,7 +150,8 @@ Route::post('online/{serialNumber}', function (string $serialNumber, Request $re
         $request->user_identifier,
         $request->charge_point_identifier,
         $request->charge_point_model_identifier,
-        $request->integration_type
+        $request->integration_type,
+        $request->brand ?? null
     ));
 });
 

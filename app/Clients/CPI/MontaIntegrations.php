@@ -258,7 +258,7 @@ class MontaIntegrations {
 
         $chargePointId = $data[0]['id'];
 
-        $endpoint = 'https://integrations-api.monta.app/api/integrations/zaptec_cloud/charge_point/' . $chargePointId . '/pair';
+        $endpoint = 'https://integrations-api.monta.app/api/integrations/ZAPTEC_CLOUD/charge_point/' . $chargePointId . '/pair';
         $response = Http::withHeaders($headers)->post($endpoint, [
             'brand' => $brand,
             'model' => $model,
