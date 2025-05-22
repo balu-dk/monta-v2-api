@@ -505,8 +505,8 @@ class MontaClient
         }
 
         // Check if pairing is needed
-        if ($chargePointBrand == 'zaptec') {
-            $basicAuth = env('BASIC_AUTH');
+        if ($integrationType == 'zaptec_cloud') {
+            $basicAuth = env('ZAPTEC');
             $response = MontaIntegrations::pairChargePoint($serialNumber, $basicAuth, $chargePointBrand, $chargePointModelIdentifier);
 
             if ($response['status'] !== 200) {
