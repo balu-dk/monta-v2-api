@@ -138,7 +138,7 @@ Route::get('integrations/{chargepointId}', function (string $chargepointID, Requ
     return response()->json(MontaClient::getIntegrationFromChargepointId($request->id, $chargepointID));
 });
 
-Route::get('online/{serialNumber}', function (string $serialNumber, Request $request) {
+Route::post('online/{serialNumber}', function (string $serialNumber, Request $request) {
     $request->validate([
         'user_identifier' => 'required',
         'charge_point_identifier' => 'required',
