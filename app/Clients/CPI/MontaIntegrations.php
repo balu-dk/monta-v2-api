@@ -118,13 +118,10 @@ class MontaIntegrations {
 
         $chargePointIntegrations = collect($integrations)
             ->filter(function ($brand) {
-                return $brand['slug'] === 'zaptec'; // Filter by brand
+                return $brand['slug'] === $brand; // Filter by brand
             })
-            ->flatMap(function ($brand) {
-                return $brand['models']; // Extract models
-            })
-            ->filter(function ($model) {
-                return $model['slug'] === 'zaptec_go'; // Filter by model
+            ->flatMap(function ($brand) use ($chargePointModelIdentifier) {
+                return $brand['models'] === $chargePointModelIdentifier; // Extract models
             })
             ->flatMap(function ($model) {
                 return $model['integrations']; // Extract integrations
