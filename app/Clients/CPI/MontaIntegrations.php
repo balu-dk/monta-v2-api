@@ -123,7 +123,7 @@ class MontaIntegrations {
             ->flatMap(function ($brand) {
                 return $brand['models']; // Extract models
             })
-            ->filter(function ($model) {
+            ->filter(function ($model) use ($chargePointModelIdentifier) {
                 return $model['slug'] === $chargePointModelIdentifier; // Filter by model
             })
             ->flatMap(function ($model) {
