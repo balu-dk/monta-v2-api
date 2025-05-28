@@ -524,7 +524,7 @@ class MontaClient
             }
         }
 
-        for ($iterations = 0; $iterations < 10; $iterations++) {
+        for ($iterations = 0; $iterations < 3; $iterations++) {
             $validation = MontaIntegrations::validateIntegration($serialNumber);
             if ($validation['status'] === 200) {
                 return [
