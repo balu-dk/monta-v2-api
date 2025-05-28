@@ -212,7 +212,7 @@ class MontaIntegrations {
             return [
                 'status' => 401,
                 'message' => 'Failed to validate integration',
-                'error' => $data['readable_message']
+                'error' => $data
             ];
         }
 
