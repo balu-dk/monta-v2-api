@@ -502,7 +502,7 @@ class MontaClient
         $chargePointBrand = null): array {
         $integration = MontaIntegrations::integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType);
 
-        Log::debug('Integration: ' . $integration);
+        Log::debug('Integration: ' . $integration['error']);
         if ($integration['status'] !== 200) {
             Log::error('Failed to integrate charge point: ' . $integration['message']);
             return [
@@ -518,7 +518,7 @@ class MontaClient
             Log::debug('Pairing is needed for Zaptec Cloud integration');
             $basicAuth = env('ZAPTEC');
             $response = MontaIntegrations::pairChargePoint($serialNumber, $basicAuth, $chargePointBrand, $chargePointModelIdentifier);
-            Log::debug('Pairing: ' . $response);
+            Log::debug('Pairing: ' . $response['error']);
             if ($response['status'] !== 200) {
                 Log::error('Failed to pair charge point: ' . $response['message']);
                 return [
