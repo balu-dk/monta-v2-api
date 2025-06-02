@@ -5,6 +5,7 @@ namespace App\Clients\CPI;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Cookie\SetCookie;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class MontaIntegrations {
     public static function getIntegrationLink ($cookies, $chargepointID): array {
@@ -224,6 +225,7 @@ class MontaIntegrations {
     }
 
     public static function pairChargePoint(string $serialNumber, $auth, $brand, $model): array {
+        Log::debug('Pairing charge point with serial number: ' . $serialNumber);
         $endpoint = 'https://integrations-api.monta.app/api/integrations/zaptec_cloud/charge_point?=' . $serialNumber;
 
         $headers = [
@@ -237,10 +239,12 @@ class MontaIntegrations {
             'Content-Type' => 'application/json'
         ];
 
-        $response = Http::withHeaders($headers)->get($endpoint);
+
+        $response = Http::withHeaders($headers)->post($endpoint);
         $data = $response->json();
 
         if (!$response->successful()) {
+            Log::error('Failed to authorize charge point with serial number: ' . $data);
             return [
                 'status' => 401,
                 'message' => 'Failed to authorize charge point',
