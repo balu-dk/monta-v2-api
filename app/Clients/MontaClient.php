@@ -502,7 +502,9 @@ class MontaClient
         $chargePointBrand = null): array {
         $integration = MontaIntegrations::integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType);
 
+        Log::debug('Integration: ' . $integration);
         if ($integration['status'] !== 200) {
+            Log::error('Failed to integrate charge point: ' . $integration['message']);
             return [
                 'status' => $integration['status'],
                 'message' => $integration['message'],
@@ -511,22 +513,30 @@ class MontaClient
         }
 
         // Check if pairing is needed
+        Log::debug('Checking if pairing is needed for integration type: ' . $integrationType);
         if ($integrationType == 'zaptec_cloud' && $chargePointBrand == 'zaptec') {
+            Log::debug('Pairing is needed for Zaptec Cloud integration');
             $basicAuth = env('ZAPTEC');
             $response = MontaIntegrations::pairChargePoint($serialNumber, $basicAuth, $chargePointBrand, $chargePointModelIdentifier);
-
+            Log::debug('Pairing: ' . $response);
             if ($response['status'] !== 200) {
+                Log::error('Failed to pair charge point: ' . $response['message']);
                 return [
                     'status' => $response['status'],
                     'message' => $response['message'],
                     'error' => $response['error']
                 ];
             }
+
+            Log::debug('Successfully paired charge point');
         }
 
+        Log::debug('Validating integration for serial number: ' . $serialNumber);
         for ($iterations = 0; $iterations < 3; $iterations++) {
+            Log::debug('Iteration ' . ($iterations + 1) . ' of 3 for validating integration');
             $validation = MontaIntegrations::validateIntegration($serialNumber);
             if ($validation['status'] === 200) {
+                Log::debug('Integration validated successfully');
                 return [
                     'status' => 200,
                     'message' => 'Successfully integrated & validated integration',
@@ -536,8 +546,11 @@ class MontaClient
                     ]
                 ];
             }
+            Log::debug('Failed to validate integration: ' . $validation['message']);
             sleep(5);
         }
+
+        Log::error('Failed to validate integration after 3 attempts: ' . $validation['error']);
 
         return [
             'status' => 401,

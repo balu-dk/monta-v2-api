@@ -145,6 +145,15 @@ Route::post('online/{serialNumber}', function (string $serialNumber, Request $re
         'charge_point_model_identifier' => 'required',
         'integration_type' => 'required',
     ]);
+
+    \Illuminate\Support\Facades\Log::debug(
+        'Integrating charge point with serial number: ' . $serialNumber .
+        ' for user: ' . $request->user_identifier .
+        ' with charge point identifier: ' . $request->charge_point_identifier .
+        ' and model identifier: ' . $request->charge_point_model_identifier .
+        ' and integration type: ' . $request->integration_type .
+        (isset($request->brand) ? ' and brand: ' . $request->brand : '')
+    );
     return response()->json(MontaClient::integrateChargePoint(
         $serialNumber,
         $request->user_identifier,
