@@ -502,7 +502,6 @@ class MontaClient
         $chargePointBrand = null): array {
         $integration = MontaIntegrations::integrateChargePoint($serialNumber, $userIdentifier, $chargePointIdentifier, $chargePointModelIdentifier, $integrationType);
 
-        Log::debug('Integration: ' . $integration['error']);
         if ($integration['status'] !== 200) {
             Log::error('Failed to integrate charge point: ' . $integration['message']);
             return [
