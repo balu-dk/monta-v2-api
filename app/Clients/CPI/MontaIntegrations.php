@@ -226,7 +226,7 @@ class MontaIntegrations {
 
     public static function pairChargePoint(string $serialNumber, $auth, $brand, $model): array {
         Log::debug('Pairing charge point with serial number: ' . $serialNumber);
-        $endpoint = 'https://integrations-api.monta.app/api/integrations/zaptec_cloud/charge_point?=' . $serialNumber;
+        $endpoint = 'https://integrations-api.monta.app/api/integrations/zaptec_cloud/charge_point?name=' . $serialNumber;
 
         $headers = [
             'Authorization' => 'Basic ' . $auth,
@@ -240,11 +240,10 @@ class MontaIntegrations {
         ];
 
 
-        $response = Http::withHeaders($headers)->post($endpoint);
+        $response = Http::withHeaders($headers)->get($endpoint);
         $data = $response->json();
 
         if (!$response->successful()) {
-            Log::error('Failed to authorize charge point with serial number: ' . $data);
             return [
                 'status' => 401,
                 'message' => 'Failed to authorize charge point',
