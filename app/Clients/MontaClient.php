@@ -548,7 +548,7 @@ class MontaClient
             sleep(5);
         }
 
-        Log::error('Failed to validate integration after 3 attempts: ' . $validation['error']);
+        Log::error('Failed to validate integration after 3 attempts');
 
         return [
             'status' => 401,
