@@ -262,10 +262,20 @@ class MontaIntegrations {
         $chargePointId = $data[0]['id'];
 
         $endpoint = 'https://integrations-api.monta.app/api/integrations/ZAPTEC_CLOUD/charge_point/' . $chargePointId . '/pair';
-        $response = Http::withHeaders($headers)->post($endpoint, [
-            'brand' => $brand,
-            'model' => $model,
-        ]);
+
+        try {
+            $response = Http::withHeaders($headers)->post($endpoint, [
+                'brand' => $brand,
+                'model' => $model,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error pairing charge point: ' . $e->getMessage());
+            return [
+                'status' => 500,
+                'message' => 'Internal server error while pairing charge point',
+                'error' => $e->getMessage()
+            ];
+        }
 
         if (!$response->successful()) {
             return [
