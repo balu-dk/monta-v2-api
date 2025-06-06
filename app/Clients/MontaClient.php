@@ -519,7 +519,7 @@ class MontaClient
             $response = MontaIntegrations::pairChargePoint($serialNumber, $basicAuth, $chargePointBrand, $chargePointModelIdentifier);
             if ($response['status'] !== 200) {
                 Log::debug('Response data: ' . json_encode($response));
-                Log::error('Failed to pair charge point: ' . $response['error']);
+                Log::error('Failed to pair charge point: ' . $response['message']);
                 return [
                     'status' => $response['status'],
                     'message' => $response['message'],
