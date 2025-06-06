@@ -518,6 +518,7 @@ class MontaClient
             $basicAuth = env('ZAPTEC');
             $response = MontaIntegrations::pairChargePoint($serialNumber, $basicAuth, $chargePointBrand, $chargePointModelIdentifier);
             if ($response['status'] !== 200) {
+                Log::debug('Response data: ' . json_encode($response));
                 Log::error('Failed to pair charge point: ' . $response['error']);
                 return [
                     'status' => $response['status'],
